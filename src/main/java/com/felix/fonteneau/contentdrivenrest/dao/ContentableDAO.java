@@ -14,4 +14,8 @@ public class ContentableDAO {
     public Contentable get(String id) {
         return contentableById.get(id);
     }
+
+    public void addOrReplace(Contentable contentable) {
+        contentableById.put(contentable.getId(), contentable);
+    }
 }
