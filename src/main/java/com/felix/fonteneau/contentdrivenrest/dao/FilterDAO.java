@@ -4,9 +4,12 @@ import com.felix.fonteneau.contentdrivenrest.model.filter.AlwaysFalseFilter;
 import com.felix.fonteneau.contentdrivenrest.model.filter.AlwaysTrueFilter;
 import com.felix.fonteneau.contentdrivenrest.model.filter.Filter;
 import com.felix.fonteneau.contentdrivenrest.model.filter.RandomFilter;
+import org.springframework.stereotype.Repository;
 
 import java.util.Map;
+import java.util.Optional;
 
+@Repository
 public class FilterDAO {
     private final Map<String, Filter> filtersByName;
 
@@ -14,8 +17,8 @@ public class FilterDAO {
         this.filtersByName = filterInit();
     }
 
-    public Filter get(String filterName) {
-        return filtersByName.get(filterName);
+    public Optional<Filter> get(String filterName) {
+        return Optional.ofNullable(filtersByName.get(filterName));
     }
 
 
