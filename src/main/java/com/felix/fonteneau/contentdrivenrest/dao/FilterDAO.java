@@ -21,7 +21,6 @@ public class FilterDAO {
         return Optional.ofNullable(filtersByName.get(filterName));
     }
 
-
     /**
      * @return all the filters needed for the tests with their named mapped.
      */

@@ -6,7 +6,7 @@ import com.felix.fonteneau.contentdrivenrest.model.Alternative;
 import com.felix.fonteneau.contentdrivenrest.model.ApplicationData;
 import com.felix.fonteneau.contentdrivenrest.model.Condition;
 import com.felix.fonteneau.contentdrivenrest.model.Content;
-import org.apache.maven.surefire.shade.org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +14,15 @@ import java.util.Optional;
 
 @Service
 public class ContentService {
-    @Autowired
-    private ContentableDAO contentableDAO;
+    private final ContentableDAO contentableDAO;
+
+    private final FilterDAO filterDAO;
 
     @Autowired
-    private FilterDAO filterDAO;
+    public ContentService(ContentableDAO contentableDAO, FilterDAO filterDAO) {
+        this.contentableDAO = contentableDAO;
+        this.filterDAO = filterDAO;
+    }
 
     public Optional<Content> getScreen(String id, ApplicationData appData) {
         return contentableDAO.get(id)

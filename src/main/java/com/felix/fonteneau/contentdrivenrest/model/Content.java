@@ -14,4 +14,5 @@ public class Content implements Contentable {
     private String type;
     private List<Content> nestedContent;
     private Link link;
+    private String text;
 }

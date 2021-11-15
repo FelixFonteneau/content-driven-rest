@@ -1,24 +1,45 @@
 package com.felix.fonteneau.contentdrivenrest.controller;
 
-import com.felix.fonteneau.contentdrivenrest.model.ApplicationData;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.felix.fonteneau.contentdrivenrest.model.ApplicationDataString;
 import com.felix.fonteneau.contentdrivenrest.model.Content;
+import com.felix.fonteneau.contentdrivenrest.model.Contentable;
 import com.felix.fonteneau.contentdrivenrest.service.ContentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
-@RequestMapping(path = "/content")
 public class ContentController {
-    @Autowired
-    private ContentService contentService;
+    private final ContentService contentService;
 
-    @GetMapping(path = "/", produces = "application/json")
-    public Content getScreen(@RequestParam String id, @RequestParam ApplicationData applicationData) {
-        return contentService.getScreen(id, applicationData)
+    @Autowired
+    public ContentController(ContentService contentService) {
+        this.contentService = contentService;
+    }
+
+    @GetMapping("/")
+    public String index() {
+        return "test";
+    }
+
+    @GetMapping(path = "/content", produces = "application/json")
+    public Content getScreen(@RequestParam String id, @RequestParam String applicationData) {
+        return contentService.getScreen(id, new ApplicationDataString(applicationData))
                 .orElse(null);
     }
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @PostMapping(path = "/addContent", consumes = "application/json")
+    public ResponseEntity<Object> addContent(@RequestBody Contentable contentable) {
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(contentable.getId())
+                .toUri();
+        return ResponseEntity.created(location).build();
+    }
 }

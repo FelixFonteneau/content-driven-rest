@@ -3,7 +3,7 @@ package com.felix.fonteneau.contentdrivenrest.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.maven.surefire.shade.org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
