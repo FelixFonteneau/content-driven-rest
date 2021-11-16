@@ -28,7 +28,7 @@ public class ContentController {
     }
 
     @GetMapping(path = "/content", produces = "application/json")
-    public Content getScreen(@RequestParam String id, @RequestParam String applicationData) {
+    public Content getScreen(@RequestParam String id, @RequestParam(required = false) String applicationData) {
         return contentService.getScreen(id, new ApplicationDataString(applicationData))
                 .orElse(null);
     }

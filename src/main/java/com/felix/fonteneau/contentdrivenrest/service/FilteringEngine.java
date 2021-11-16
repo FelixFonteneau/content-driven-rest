@@ -5,7 +5,7 @@ import com.felix.fonteneau.contentdrivenrest.model.Alternative;
 import com.felix.fonteneau.contentdrivenrest.model.ApplicationData;
 import com.felix.fonteneau.contentdrivenrest.model.Condition;
 import com.felix.fonteneau.contentdrivenrest.model.Content;
-import org.apache.commons.lang3.tuple.Pair;
+import com.felix.fonteneau.contentdrivenrest.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

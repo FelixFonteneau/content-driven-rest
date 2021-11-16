@@ -6,7 +6,7 @@ import com.felix.fonteneau.contentdrivenrest.model.Alternative;
 import com.felix.fonteneau.contentdrivenrest.model.Condition;
 import com.felix.fonteneau.contentdrivenrest.model.Content;
 import com.felix.fonteneau.contentdrivenrest.model.Link;
-import org.apache.commons.lang3.tuple.Pair;
+import com.felix.fonteneau.contentdrivenrest.util.Pair;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

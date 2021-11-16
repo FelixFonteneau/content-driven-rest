@@ -5,12 +5,14 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
+import com.felix.fonteneau.contentdrivenrest.model.Condition;
+import com.felix.fonteneau.contentdrivenrest.model.Content;
 import com.felix.fonteneau.contentdrivenrest.model.Contentable;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class EntityGenerator {
@@ -47,6 +49,9 @@ public class EntityGenerator {
     public void serialize(
         Pair pair, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
         throws IOException {
+      HashMap<Content, Condition> mapPair = new HashMap();
+
+      jsonGenerator.writeObject(new HashMap<>());
       jsonGenerator.writeStartArray(2);
       jsonGenerator.writeObject(pair.getLeft());
       jsonGenerator.writeObject(pair.getRight());
@@ -59,8 +64,11 @@ public class EntityGenerator {
     @Override
     public Pair deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
         throws IOException {
-      final Object[] array = jsonParser.readValueAs(Object[].class);
-      return Pair.of(array[0], array[1]);
+      TypeReference<HashMap<Content, Condition>> typeRef = new TypeReference<HashMap<Content, Condition>>() {};
+
+      final Map<Content, Condition> map = jsonParser.readValueAs(typeRef);
+      Map.Entry<Content, Condition> entry = map.entrySet().iterator().next();
+      return Pair.of(entry.getKey(), entry.getValue());
     }
   }
 }

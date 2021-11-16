@@ -1,10 +1,10 @@
 package com.felix.fonteneau.contentdrivenrest.model;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.felix.fonteneau.contentdrivenrest.util.Pair;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
