@@ -47,7 +47,7 @@ class ContentDrivenRestApplicationTests {
 
     @Test
     void testGetContent() throws Exception {
-        contentableDAO.addOrReplace(new Content("id1", "text", null, null, "bla"));
+        contentableDAO.addOrReplace(new Content("id1", "text", null, null, "bla", null, null));
 
         System.out.println("test");
 
@@ -65,9 +65,9 @@ class ContentDrivenRestApplicationTests {
 
     @Test
     void testGetAlternative() throws Exception {
-        Content c1 = new Content("id1", "text", null, null, "bla");
-        Content c2 = new Content("id2", "text", null, new Link("id5"), "next");
-        Content c3 = new Content("id3", "text", null, null, "book");
+        Content c1 = new Content("id1", "text", null, null, "bla", null, null);
+        Content c2 = new Content("id2", "text", null, new Link("id5"), "next", null, null);
+        Content c3 = new Content("id3", "text", null, null, "book", null, null);
 
         contentableDAO.addOrReplace(
                 new Alternative("alternative1",

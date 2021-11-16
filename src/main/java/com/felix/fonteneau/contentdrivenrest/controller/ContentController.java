@@ -1,6 +1,7 @@
 package com.felix.fonteneau.contentdrivenrest.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.felix.fonteneau.contentdrivenrest.model.ApplicationDataString;
 import com.felix.fonteneau.contentdrivenrest.model.Content;
 import com.felix.fonteneau.contentdrivenrest.model.Contentable;
@@ -34,12 +35,20 @@ public class ContentController {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @PostMapping(path = "/addContent", consumes = "application/json")
-    public ResponseEntity<Object> addContent(@RequestBody Contentable contentable) {
+    public ResponseEntity<Object> addContent(@RequestBody String contentableAsJson) {
+        Contentable contentable;
+        try {
+            contentable = contentService.addContentAsJson(contentableAsJson);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(contentable.getId())
                 .toUri();
+
         return ResponseEntity.created(location).build();
     }
 }
