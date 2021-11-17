@@ -7,6 +7,8 @@ import com.felix.fonteneau.contentdrivenrest.model.ApplicationData;
 import com.felix.fonteneau.contentdrivenrest.model.Content;
 import com.felix.fonteneau.contentdrivenrest.model.Contentable;
 import com.felix.fonteneau.contentdrivenrest.util.EntityGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,8 @@ import java.util.Optional;
 
 @Service
 public class ContentService {
+    private Logger logger = LoggerFactory.getLogger(ContentService.class);
+
     private final ContentableDAO contentableDAO;
     private final FilteringEngine filteringEngine;
 
@@ -36,7 +40,11 @@ public class ContentService {
                     if (contentable instanceof Content) {
                         return (Content) contentable;
                     } else {
-                        return filteringEngine.resolveAlternative((Alternative) contentable, appData).orElse(null);
+                        return filteringEngine.resolveAlternative((Alternative) contentable, appData)
+                                .orElseGet(() -> {
+                                    logger.error("No content found for alternative {}.", contentable);
+                                    return null;
+                                });
                     }
                 });
     }

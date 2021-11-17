@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -53,14 +54,16 @@ class DeserializationTests {
 
     @Test
     void generateContentsFromJsonAlternative() throws Exception {
-        String json = "{\"id\":\"test2\",\"type\":\"ALTERNATIVE_REQUEST\",\"possibleAlternativesWithCondition\":[{{\"id\":\"test2\",\"type\":\"screen\",\"nestedContent\":[{\"type\":\"button\",\"text\":\"next\",\"link\":{\"to\":\"test2\\/0\\/0\"}},{\"type\":\"tab\",\"nestedContent\":[{\"type\":\"tab\",\"nestedContent\":[{\"type\":\"icon\",\"media\":\"server.address\\/lift\\/sky\",\"metadata\":{\"style\":[\"name\",\"competition\",\"destruction\",\"sugar\",\"end\",\"gold\"]}}]}]}]},{\"filtersName\":[\"alwaysTrue\"]}]},\"test2\\/0\\/0\":{\"id\":\"test2\\/0\\/0\",\"type\":\"screen\",\"nestedContent\":[{\"type\":\"button\",\"text\":\"next\",\"link\":{\"to\":\"1\"}},{\"type\":\"button\",\"text\":\"home page\",\"link\":{\"to\":\"test2\"}},{\"type\":\"button\",\"text\":\"previous\",\"link\":{\"to\":\"test2\"}},{\"type\":\"list\",\"nestedContent\":[{\"type\":\"group\",\"nestedContent\":[{\"type\":\"video\",\"media\":\"server.address\\/smile\\/crime\",\"metadata\":{\"style\":[\"fear\",\"development\",\"expert\",\"love\",\"cause\",\"memory\"]}}]}]}]}";
+        // String json = "{\"id\":\"test2\",\"type\":\"ALTERNATIVE_REQUEST\",\"possibleAlternativesWithCondition\":[{{\"id\":\"test2\",\"type\":\"screen\",\"nestedContent\":[{\"type\":\"button\",\"text\":\"next\",\"link\":{\"to\":\"test2\\/0\\/0\"}},{\"type\":\"tab\",\"nestedContent\":[{\"type\":\"tab\",\"nestedContent\":[{\"type\":\"icon\",\"media\":\"server.address\\/lift\\/sky\",\"metadata\":{\"style\":[\"name\",\"competition\",\"destruction\",\"sugar\",\"end\",\"gold\"]}}]}]}]},{\"filtersName\":[\"alwaysTrue\"]}]},\"test2\\/0\\/0\":{\"id\":\"test2\\/0\\/0\",\"type\":\"screen\",\"nestedContent\":[{\"type\":\"button\",\"text\":\"next\",\"link\":{\"to\":\"1\"}},{\"type\":\"button\",\"text\":\"home page\",\"link\":{\"to\":\"test2\"}},{\"type\":\"button\",\"text\":\"previous\",\"link\":{\"to\":\"test2\"}},{\"type\":\"list\",\"nestedContent\":[{\"type\":\"group\",\"nestedContent\":[{\"type\":\"video\",\"media\":\"server.address\\/smile\\/crime\",\"metadata\":{\"style\":[\"fear\",\"development\",\"expert\",\"love\",\"cause\",\"memory\"]}}]}]}]}";
+        String json = "{\"id\":\"test2\",\"type\":\"ALTERNATIVE_REQUEST\",\"possibleAlternativesWithCondition\":[{\"left\":{\"id\":\"test2\",\"type\":\"text\",\"text\":\"bla\"},\"right\":{\"filtersName\":[\"alwaysTrue\"]}},{\"left\":{\"id\":\"test2\",\"type\":\"text\",\"text\":\"aaa\"},\"right\":{\"filtersName\":[\"alwaysFalse\"]}}]}";
         Contentable contentable = EntityGenerator.generateContentFromJson(json);
         assertEquals("test2", contentable.getId());
         assertTrue(contentable instanceof Alternative);
-        assertEquals(1, ((Alternative) contentable).getPossibleAlternativesWithCondition().size());
+        assertEquals(2, ((Alternative) contentable).getPossibleAlternativesWithCondition().size());
 
         contentService.addContentAsJson(json);
-        contentService.getScreen("test2", new ApplicationDataString(""));
-
+        Optional<Content> res = contentService.getScreen("test2", new ApplicationDataString(""));
+        assertTrue(res.isPresent());
+        assertEquals("bla", res.get().getText());
     }
 }
